@@ -18,12 +18,12 @@ fi
 # Filter the file for rows that contain "@amazon.com" in the email column
 grep "@amazon.com\|@Amazon.com" "$file" > filtered.txt
 
-# Extract the first and last names from the filtered file and print them to output.txt
+# Extract the first and last names from the filtered file and print them to output_names.txt
 # Use awk to print the first and second fields, separated by a space
-awk -F, '{print $3 " " $2}' filtered.txt > output.txt
+awk -F, '{print $3 " " $2}' filtered.txt > output_names.txt
 
 # Clean up the temporary file
 rm filtered.txt
 
 # Confirm that the output has been written to the file
-echo "Output written to output.txt"
+echo "Output written to output_names.txt"
