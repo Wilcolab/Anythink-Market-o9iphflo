@@ -15,8 +15,14 @@ if [ ! -f "$file" ]; then
   exit 1
 fi
 
-# Print the contents of the file to output.txt
-cat "$file" > output.txt
+# Filter the file for rows that contain "@amazon.com" in the email column
+grep "@amazon.com\|@Amazon.com" "$file" > filtered.txt
+
+# Extract the first and last names from the filtered file and print them to output.txt
+cut -d',' -f3,2 filtered.txt > output.txt
+
+# Clean up the temporary file
+rm filtered.txt
 
 # Confirm that the output has been written to the file
 echo "Output written to output.txt"
