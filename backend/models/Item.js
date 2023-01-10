@@ -13,40 +13,39 @@ var ItemSchema = new mongoose.Schema(
 		comments: [{ type: mongoose.Schema.Types.ObjectId, ref: "Comment" }],
 		tagList: [{ type: String }],
 		seller: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
-		isVerified: {type: Boolean, default: false}
 	},
 	{ timestamps: true }
 );
 
 ItemSchema.plugin(uniqueValidator, { message: "is already taken" });
 
-ItemSchema.pre("validate", function(next) {
-  if (!this.slug) {
-    this.slugify();
-  }
+ItemSchema.pre("validate", function (next) {
+	if (!this.slug) {
+		this.slugify();
+	}
 
-  next();
+	next();
 });
 
-ItemSchema.methods.slugify = function() {
-  this.slug =
-    slug(this.title) +
-    "-" +
-    ((Math.random() * Math.pow(36, 6)) | 0).toString(36);
+ItemSchema.methods.slugify = function () {
+	this.slug =
+		slug(this.title) +
+		"-" +
+		((Math.random() * Math.pow(36, 6)) | 0).toString(36);
 };
 
-ItemSchema.methods.updateFavoriteCount = function() {
-  var item = this;
+ItemSchema.methods.updateFavoriteCount = function () {
+	var item = this;
 
-  return User.count({ favorites: { $in: [item._id] } }).then(function(count) {
-    item.favoritesCount = count;
+	return User.count({ favorites: { $in: [item._id] } }).then(function (count) {
+		item.favoritesCount = count;
 
-    return item.save();
-  });
+		return item.save();
+	});
 };
 
 ItemSchema.methods.toJSONFor = function (user) {
-  return {
+	return {
 		slug: this.slug,
 		title: this.title,
 		description: this.description,
@@ -57,7 +56,6 @@ ItemSchema.methods.toJSONFor = function (user) {
 		favorited: user ? user.isFavorite(this._id) : false,
 		favoritesCount: this.favoritesCount,
 		seller: this.seller.toProfileJSONFor(user),
-		isVerified: this.isVerified
 	};
 };
 

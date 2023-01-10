@@ -90,6 +90,7 @@ UserSchema.methods.toProfileJSONFor = function (user) {
 		image:
 			this.image || "https://static.productionready.io/images/smiley-cyrus.jpg",
 		following: user ? user.isFollowing(this._id) : false,
+		isVerified: false,
 	};
 };
 
@@ -129,13 +130,6 @@ UserSchema.methods.isFollowing = function (id) {
 	return this.following.some(function (followId) {
 		return followId.toString() === id.toString();
 	});
-};
-
-UserSchema.methods.verify = function (id) {
-	if (this.isVerified) {
-		this.isVerified = true;
-	}
-	return this.save();
 };
 
 mongoose.model("User", UserSchema);
