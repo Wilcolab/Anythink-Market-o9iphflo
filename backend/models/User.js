@@ -5,36 +5,42 @@ var jwt = require("jsonwebtoken");
 var secret = require("../config").secret;
 
 var UserSchema = new mongoose.Schema(
-  {
-    username: {
-      type: String,
-      lowercase: true,
-      unique: true,
-      required: [true, "can't be blank"],
-      match: [/^[a-zA-Z0-9]+$/, "is invalid"],
-      index: true
-    },
-    email: {
-      type: String,
-      lowercase: true,
-      unique: true,
-      required: [true, "can't be blank"],
-      match: [/\S+@\S+\.\S+/, "is invalid"],
-      index: true
-    },
-    bio: String,
-    image: String,
-    role: {
-      type: String,
-      enum: ["user", "admin"],
-      default: "user"
-    },
-    favorites: [{ type: mongoose.Schema.Types.ObjectId, ref: "Item" }],
-    following: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
-    hash: String,
-    salt: String
-  },
-  { timestamps: true }
+	{
+		username: {
+			type: String,
+			lowercase: true,
+			unique: true,
+			required: [true, "can't be blank"],
+			match: [/^[a-zA-Z0-9]+$/, "is invalid"],
+			index: true,
+		},
+		email: {
+			type: String,
+			lowercase: true,
+			unique: true,
+			required: [true, "can't be blank"],
+			match: [/\S+@\S+\.\S+/, "is invalid"],
+			index: true,
+		},
+		bio: String,
+		image: String,
+		role: {
+			type: String,
+			enum: ["user", "admin"],
+			default: "user",
+		},
+		favorites: [{ type: mongoose.Schema.Types.ObjectId, ref: "Item" }],
+		following: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
+		hash: String,
+		salt: String,
+	},
+	{ timestamps: true },
+	{
+		isVerified: {
+      type: Boolean,
+      default: false,
+		},
+	}
 );
 
 UserSchema.plugin(uniqueValidator, { message: "is already taken." });
