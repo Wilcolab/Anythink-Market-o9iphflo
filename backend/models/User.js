@@ -22,6 +22,10 @@ var UserSchema = new mongoose.Schema(
 			match: [/\S+@\S+\.\S+/, "is invalid"],
 			index: true,
 		},
+		isVerified: {
+			type: Boolean,
+			default: false,
+		},
 		bio: String,
 		image: String,
 		role: {
@@ -34,13 +38,7 @@ var UserSchema = new mongoose.Schema(
 		hash: String,
 		salt: String,
 	},
-	{ timestamps: true },
-	{
-		isVerified: {
-      type: Boolean,
-      default: false,
-		},
-	}
+	{ timestamps: true }
 );
 
 UserSchema.plugin(uniqueValidator, { message: "is already taken." });

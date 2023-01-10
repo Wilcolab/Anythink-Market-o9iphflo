@@ -4,17 +4,18 @@ var slug = require("slug");
 var User = mongoose.model("User");
 
 var ItemSchema = new mongoose.Schema(
-  {
-    slug: { type: String, lowercase: true, unique: true },
-    title: String,
-    description: String,
-    image: String,
-    favoritesCount: { type: Number, default: 0 },
-    comments: [{ type: mongoose.Schema.Types.ObjectId, ref: "Comment" }],
-    tagList: [{ type: String }],
-    seller: { type: mongoose.Schema.Types.ObjectId, ref: "User" }
-  },
-  { timestamps: true }
+	{
+		slug: { type: String, lowercase: true, unique: true },
+		title: String,
+		description: String,
+		image: String,
+		favoritesCount: { type: Number, default: 0 },
+		comments: [{ type: mongoose.Schema.Types.ObjectId, ref: "Comment" }],
+		tagList: [{ type: String }],
+		seller: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
+		isVerified: {type: Boolean, default: false}
+	},
+	{ timestamps: true }
 );
 
 ItemSchema.plugin(uniqueValidator, { message: "is already taken" });
@@ -44,19 +45,20 @@ ItemSchema.methods.updateFavoriteCount = function() {
   });
 };
 
-ItemSchema.methods.toJSONFor = function(user) {
+ItemSchema.methods.toJSONFor = function (user) {
   return {
-    slug: this.slug,
-    title: this.title,
-    description: this.description,
-    image: this.image,
-    createdAt: this.createdAt,
-    updatedAt: this.updatedAt,
-    tagList: this.tagList,
-    favorited: user ? user.isFavorite(this._id) : false,
-    favoritesCount: this.favoritesCount,
-    seller: this.seller.toProfileJSONFor(user)
-  };
+		slug: this.slug,
+		title: this.title,
+		description: this.description,
+		image: this.image,
+		createdAt: this.createdAt,
+		updatedAt: this.updatedAt,
+		tagList: this.tagList,
+		favorited: user ? user.isFavorite(this._id) : false,
+		favoritesCount: this.favoritesCount,
+		seller: this.seller.toProfileJSONFor(user),
+		isVerified: this.isVerified
+	};
 };
 
 mongoose.model("Item", ItemSchema);
