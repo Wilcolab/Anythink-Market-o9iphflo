@@ -46,7 +46,7 @@ const ItemPreview = (props) => {
           <h3 className="card-title">{item.title}</h3>
           <p className="card-text crop-text-3">{item.description}</p>
         </Link>
-        <div className="d-flex flex-row align-items-center pt-2 item-footer">
+        <div className="d-flex flex-row align-items-center pt-2 item-footer justify-content-between">
           <Link to={`/@${item.seller.username}`} className="flex-grow-1">
             <img
               src={item.seller.image}
@@ -54,6 +54,13 @@ const ItemPreview = (props) => {
               className="user-pic rounded-circle pr-1"
             />
           </Link>
+
+          <div>
+            <img src="verified_seller.svg" alt="verified seller" />
+            <span>TOP SELLER</span>
+          </div>
+            
+          
           <button className="btn btn-outline-secondary" onClick={handleClick}>
             <i className="ion-heart"></i> {item.favoritesCount}
           </button>
