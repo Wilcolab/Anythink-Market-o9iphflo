@@ -55,10 +55,10 @@ const ItemPreview = (props) => {
             />
           </Link>
 
-          <div>
+          {item.seller.isVerified && <div>
             <img src="verified_seller.svg" alt="verified seller" />
             <span>TOP SELLER</span>
-          </div>
+          </div>}
             
           
           <button className="btn btn-outline-secondary" onClick={handleClick}>
