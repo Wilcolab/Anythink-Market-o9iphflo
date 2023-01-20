@@ -1,10 +1,15 @@
 import ItemPreview from "./ItemPreview";
 import ListPagination from "./ListPagination";
 import React from "react";
+import Empty from "./Home/Empty";
 
 const ItemList = (props) => {
   if (!props.items) {
     return <div className="py-4">Loading...</div>;
+  }
+
+  if (props.noResults) {
+    return <Empty />;
   }
 
   if (props.items.length === 0) {

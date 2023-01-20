@@ -10,6 +10,14 @@ function Search(props) {
         agent.Items.byTitle(e.target.value)
       );
     }
+
+    if (e.target.value.length === 0) {
+      props.onTypeTitle(
+        e.target.value,
+        (page) => agent.Items.byTitle(e.target.value, page),
+        agent.Items.byTitle(e.target.value)
+      );
+    }
   };
 
   return (
