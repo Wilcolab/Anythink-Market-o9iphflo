@@ -1,7 +1,8 @@
 import React from "react";
 import logo from "../../imgs/logo.png";
+import Search from "./Search";
 
-const Banner = () => {
+const Banner = (props) => {
   return (
     <div className="banner text-white">
       <div className="container p-4 text-center">
@@ -9,6 +10,7 @@ const Banner = () => {
         <div>
           <span>A place to </span>
           <span id="get-part">get</span>
+          <Search onTypeTitle={props.onTypeTitle} />
           <span> the cool stuff.</span>
         </div>
       </div>

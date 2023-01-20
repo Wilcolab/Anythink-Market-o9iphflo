@@ -50,6 +50,10 @@ const Tags = {
   getAll: () => requests.get("/tags"),
 };
 
+const Titles = {
+  getAll: () => requests.get("/titles"),
+};
+
 const limit = (count, p) => `limit=${count}&offset=${p ? p * count : 0}`;
 const omitSlug = (item) => Object.assign({}, item, { slug: undefined });
 const Items = {
@@ -58,6 +62,8 @@ const Items = {
     requests.get(`/items?seller=${encode(seller)}&${limit(500, page)}`),
   byTag: (tag, page) =>
     requests.get(`/items?tag=${encode(tag)}&${limit(1000, page)}`),
+  byTitle: (title, page) =>
+    requests.get(`/items?title=${encode(title)}&${limit(1000, page)}`),
   del: (slug) => requests.del(`/items/${slug}`),
   favorite: (slug) => requests.post(`/items/${slug}/favorite`),
   favoritedBy: (seller, page) =>
@@ -90,6 +96,7 @@ const agentObj = {
   Comments,
   Profile,
   Tags,
+  Titles,
   setToken: (_token) => {
     token = _token;
   },
