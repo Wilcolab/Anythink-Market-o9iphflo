@@ -11,11 +11,13 @@ import { ThemeProvider } from "styled-components";
 import theme from "./styles/theme";
 
 import App from "./components/App";
+import GlobalStyle from "./styles/GlobalStyle";
 
 ReactDOM.render(
 	<Provider store={store}>
 		<ConnectedRouter history={history}>
-			<ThemeProvider theme={theme}>
+      <ThemeProvider theme={theme}>
+        <GlobalStyle />
 				<Switch>
 					<Route path="/" component={App} />
 				</Switch>
