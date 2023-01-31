@@ -53,3 +53,5 @@ spec:
           resources:
             {{- toYaml .Values.backend.resources | nindent 12 }}
       restartPolicy: Always
+NEW_RELIC_LICENSE_KEY: new-relic-license-key
+NEW_RELIC_APP_NAME: anythink-market-o9iphflo-by-biruk
