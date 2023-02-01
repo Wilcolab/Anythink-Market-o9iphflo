@@ -29,6 +29,12 @@ spec:
               value: development
             - name: PORT
               value: "{{ .Values.backend.containerPort }}"
+            - name: NEW_RELIC_LICENSE_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: new-relic-license-key
+            - name: NEW_RELIC_APP_NAME
+              value: anythink-market-o9iphflo-by-biruk
           image: "{{ include "anythink-tenant.backendRepository" .}}:{{ .Values.backend.image.tag }}"
           imagePullPolicy: {{ .Values.backend.image.pullPolicy }}
           name: {{ .Values.backend.serviceName }}
@@ -53,5 +59,3 @@ spec:
           resources:
             {{- toYaml .Values.backend.resources | nindent 12 }}
       restartPolicy: Always
-NEW_RELIC_LICENSE_KEY: new-relic-license-key
-NEW_RELIC_APP_NAME: anythink-market-o9iphflo-by-biruk
