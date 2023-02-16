@@ -1,8 +1,10 @@
 import agent from "../../../agent";
 
 export async function getItemAndComments(id) {
-  const item = await agent.Items.get(id);
-  const comments = await agent.Comments.forItem(id);
+	const [item, comments] = await Promise.all([
+		agent.Items.get(id),
+		agent.Comments.forItem(id),
+	]).then((result) => result);
 
-  return [item, comments];
+	return [item, comments];
 }
