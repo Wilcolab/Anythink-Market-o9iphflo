@@ -1,5 +1,5 @@
 import React from 'react'
-import { Redirect, Route } from 'react-router';
+import {  Route } from 'react-router';
 
 function PrivateRoute({ component: Component, token, ...rest }) {
 	return (
@@ -9,11 +9,9 @@ function PrivateRoute({ component: Component, token, ...rest }) {
 				token ? (
 					<Component {...props} />
 				) : (
-					<Redirect
-						to={{
-							pathname: "/login",
-						}}
-					/>
+					<div className='text-center'>
+						<h1>Protected Content</h1>
+					</div>
 				)
 			}
 		/>
