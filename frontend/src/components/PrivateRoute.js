@@ -9,9 +9,7 @@ function PrivateRoute({ component: Component, token, ...rest }) {
 				token ? (
 					<Component {...props} />
 				) : (
-					<div className='text-center'>
-						<h1>Protected Content</h1>
-					</div>
+					null
 				)
 			}
 		/>
