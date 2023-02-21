@@ -1,17 +1,20 @@
 import React from 'react'
-import {  Route } from 'react-router';
+import { Redirect, Route } from 'react-router';
 
-function PrivateRoute({ component: Component, token, ...rest }) {
+function PrivateRoute({ component: Component, isAuthenticated, ...rest }) {
 	return (
 		<Route
 			{...rest}
 			render={(props) =>
-				token ? (
-					<>
-						<h1 className="text-center">Protected Content</h1>
-						<Component {...props} />
-					</>
-				) : null
+				isAuthenticated ? (
+					<Component {...props} />
+				) : (
+					<Redirect
+						to={{
+							pathname: "/login",
+						}}
+					/>
+				)
 			}
 		/>
 	);

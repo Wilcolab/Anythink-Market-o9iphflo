@@ -32,25 +32,32 @@ const mapDispatchToProps = (dispatch) => ({
 });
 
 class App extends React.Component {
-  componentWillReceiveProps(nextProps) {
-    if (nextProps.redirectTo) {
-      // this.context.router.replace(nextProps.redirectTo);
-      store.dispatch(push(nextProps.redirectTo));
-      this.props.onRedirect();
-    }
-  }
+	state = {
+		isAuthenticated: false
+	};
+	componentWillReceiveProps(nextProps) {
+		if (nextProps.redirectTo) {
+			// this.context.router.replace(nextProps.redirectTo);
+			store.dispatch(push(nextProps.redirectTo));
+			this.props.onRedirect();
+		}
+	}
 
-  componentWillMount() {
-    const token = window.localStorage.getItem("jwt");
-    if (token) {
-      agent.setToken(token);
-    }
+	componentWillMount() {
+		const token = window.localStorage.getItem("jwt");
+		if (token) {
+			agent.setToken(token);
+		}
 
     this.props.onLoad(token ? agent.Auth.current() : null, token);
-  }
+    this.setState(
+			token ? { isAuthenticated: true } : { isAuthenticated: false }
+		);
+	}
   render() {
-    if (this.props.appLoaded) {
-      return (
+    
+		if (this.props.appLoaded) {
+			return (
 				<div>
 					<Header
 						appName={this.props.appName}
@@ -64,26 +71,36 @@ class App extends React.Component {
 							path="/editor/:slug"
 							exact
 							component={Editor}
-							token={this.props.currentUser}
+							isAuthenticated={this.state.isAuthenticated}
 						/>
-						<PrivateRoute path="/editor" exact component={Editor} token={this.props.currentUser} />
+						<PrivateRoute
+							path="/editor"
+							exact
+							component={Editor}
+							isAuthenticated={this.state.isAuthenticated}
+						/>
 						<Route path="/item/:id" component={Item} />
-						<PrivateRoute path="/settings" exact component={Settings} token={this.props.currentUser} />
+						<PrivateRoute
+							path="/settings"
+							exact
+							component={Settings}
+							isAuthenticated={this.state.isAuthenticated}
+						/>
 						<Route path="/@:username/favorites" component={ProfileFavorites} />
 						<Route path="/@:username" component={Profile} />
 					</Switch>
 				</div>
 			);
-    }
-    return (
-      <div>
-        <Header
-          appName={this.props.appName}
-          currentUser={this.props.currentUser}
-        />
-      </div>
-    );
-  }
+		}
+		return (
+			<div>
+				<Header
+					appName={this.props.appName}
+					currentUser={this.props.currentUser}
+				/>
+			</div>
+		);
+	}
 }
 
 // App.contextTypes = {
