@@ -7,9 +7,9 @@ function PrivateRoute({ children, auth, ...rest }) {
 			{...rest}
 			render={({ location }) =>
 				auth ? (
-					children
-				) : (
 					null
+				) : (
+					children
 				)
 			}
 		/>
