@@ -32,9 +32,6 @@ const mapDispatchToProps = (dispatch) => ({
 });
 
 class App extends React.Component {
-	state = {
-		isAuthenticated: false
-	};
 	componentWillReceiveProps(nextProps) {
 		if (nextProps.redirectTo) {
 			// this.context.router.replace(nextProps.redirectTo);
@@ -50,11 +47,8 @@ class App extends React.Component {
 		}
 
     this.props.onLoad(token ? agent.Auth.current() : null, token);
-    this.setState(
-			token ? { isAuthenticated: true } : { isAuthenticated: false }
-		);
 	}
-  render() {
+	render() {
     
 		if (this.props.appLoaded) {
 			return (
@@ -67,25 +61,21 @@ class App extends React.Component {
 						<Route exact path="/" component={Home} />
 						<Route path="/login" component={Login} />
 						<Route path="/register" component={Register} />
-						<PrivateRoute
-							path="/editor/:slug"
-							exact
-							component={Editor}
-							isAuthenticated={this.state.isAuthenticated}
-						/>
-						<PrivateRoute
-							path="/editor"
-							exact
-							component={Editor}
-							isAuthenticated={this.state.isAuthenticated}
-						/>
+
+						<PrivateRoute path="/editor/:slug" auth={this.props.currentUser}>
+							<Editor />
+						</PrivateRoute>
+
+						<PrivateRoute path="/editor" auth={this.props.currentUser}>
+							<Editor />
+						</PrivateRoute>
+
 						<Route path="/item/:id" component={Item} />
-						<PrivateRoute
-							path="/settings"
-							exact
-							component={Settings}
-							isAuthenticated={this.state.isAuthenticated}
-						/>
+
+						<PrivateRoute path="/settings" auth={this.props.currentUser}>
+							<Settings />
+						</PrivateRoute>
+
 						<Route path="/@:username/favorites" component={ProfileFavorites} />
 						<Route path="/@:username" component={Profile} />
 					</Switch>
