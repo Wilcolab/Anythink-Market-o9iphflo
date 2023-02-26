@@ -6,11 +6,7 @@ function PrivateRoute({ children, auth, ...rest }) {
 		<Route
 			{...rest}
 			render={({ location }) =>
-				auth ? (
-					null
-				) : (
-					children
-				)
+				auth ? <div>Protected Content</div> : null
 			}
 		/>
 	);
