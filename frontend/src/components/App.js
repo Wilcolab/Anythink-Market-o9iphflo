@@ -14,7 +14,6 @@ import Register from "./Register";
 import Settings from "./Settings";
 import { store } from "../store";
 import { push } from "react-router-redux";
-import NotFound from "./NotFound";
 
 const mapStateToProps = (state) => {
   return {
@@ -67,7 +66,6 @@ class App extends React.Component {
             <Route path="/settings" component={Settings} />
             <Route path="/@:username/favorites" component={ProfileFavorites} />
             <Route path="/@:username" component={Profile} />
-            <Route path="/" component={NotFound} />
           </Switch>
         </div>
       );
