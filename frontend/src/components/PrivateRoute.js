@@ -1,5 +1,5 @@
 import React from 'react'
-import { Redirect, Route } from 'react-router';
+import {  Route } from 'react-router';
 
 function PrivateRoute({ children, auth, ...rest }) {
 	return (
@@ -7,14 +7,9 @@ function PrivateRoute({ children, auth, ...rest }) {
 			{...rest}
 			render={({ location }) =>
 				auth ? (
-					children
+					<div>Protected Content</div>
 				) : (
-					<Redirect
-						to={{
-							pathname: "/login",
-							state: { from: location },
-						}}
-					/>
+					null
 				)
 			}
 		/>
