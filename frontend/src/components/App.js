@@ -17,18 +17,18 @@ import { push } from "react-router-redux";
 import PrivateRoute from "./PrivateRoute";
 
 const mapStateToProps = (state) => {
-  return {
-    appLoaded: state.common.appLoaded,
-    appName: state.common.appName,
-    currentUser: state.common.currentUser,
-    redirectTo: state.common.redirectTo,
-  };
+	return {
+		appLoaded: state.common.appLoaded,
+		appName: state.common.appName,
+		currentUser: state.common.currentUser,
+		redirectTo: state.common.redirectTo,
+	};
 };
 
 const mapDispatchToProps = (dispatch) => ({
-  onLoad: (payload, token) =>
-    dispatch({ type: APP_LOAD, payload, token, skipTracking: true }),
-  onRedirect: () => dispatch({ type: REDIRECT }),
+	onLoad: (payload, token) =>
+		dispatch({ type: APP_LOAD, payload, token, skipTracking: true }),
+	onRedirect: () => dispatch({ type: REDIRECT }),
 });
 
 class App extends React.Component {
@@ -46,10 +46,9 @@ class App extends React.Component {
 			agent.setToken(token);
 		}
 
-    this.props.onLoad(token ? agent.Auth.current() : null, token);
+		this.props.onLoad(token ? agent.Auth.current() : null, token);
 	}
 	render() {
-    
 		if (this.props.appLoaded) {
 			return (
 				<div>
@@ -69,15 +68,23 @@ class App extends React.Component {
 						<PrivateRoute path="/editor" auth={this.props.currentUser}>
 							<Editor />
 						</PrivateRoute>
-
-						<Route path="/item/:id" component={Item} />
+						<PrivateRoute path="/item/:id" auth={this.props.currentUser}>
+							<Item />
+						</PrivateRoute>
 
 						<PrivateRoute path="/settings" auth={this.props.currentUser}>
 							<Settings />
 						</PrivateRoute>
 
-						<Route path="/@:username/favorites" component={ProfileFavorites} />
-						<Route path="/@:username" component={Profile} />
+						<PrivateRoute
+							path="/@:username/favorites"
+							auth={this.props.currentUser}>
+							<ProfileFavorites />
+						</PrivateRoute>
+
+						<PrivateRoute path="/@:username" auth={this.props.currentUser}>
+							<Profile />
+						</PrivateRoute>
 					</Switch>
 				</div>
 			);
