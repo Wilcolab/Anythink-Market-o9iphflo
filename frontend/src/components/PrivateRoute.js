@@ -1,19 +1,14 @@
-import React from 'react'
-import {  Route } from 'react-router';
+import React from "react";
+import { Route, Redirect } from "react-router";
 
-function PrivateRoute({ children, auth, ...rest }) {
+function PrivateRoute({ currentUser, component }) {
 	return (
 		<Route
-			{...rest}
-			render={({ location }) =>
-				auth ? (
-					<div>Protected Content</div>
-				) : (
-					null
-				)
+			render={() =>
+				currentUser?.isAuthenticated ? component() : <Redirect to="/" />
 			}
 		/>
 	);
 }
 
-export default PrivateRoute
+export default PrivateRoute;
