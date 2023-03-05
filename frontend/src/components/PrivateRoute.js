@@ -1,13 +1,9 @@
 import React from "react";
 import { Route, Redirect } from "react-router";
 
-function PrivateRoute({ currentUser, component }) {
+function PrivateRoute({ currentUser, children }) {
 	return (
-		<Route
-			render={() =>
-				currentUser?.isAuthenticated ? component() : <Redirect to="/" />
-			}
-		/>
+		<Route render={() => (currentUser ? children : <Redirect to="/login" />)} />
 	);
 }
 
