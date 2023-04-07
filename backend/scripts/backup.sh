@@ -1,5 +1,3 @@
-#!/bin/bash
-
 # Get the log file path from the command line argument
 log_file_path=$1
 
