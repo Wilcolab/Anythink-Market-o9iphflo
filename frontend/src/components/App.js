@@ -11,79 +11,71 @@ import Profile from "./Profile";
 import ProfileFavorites from "./ProfileFavorites";
 import Register from "./Register";
 import Settings from "./Settings";
-import jwt_decode from "jwt-decode";
 import { Route, Routes, useNavigate } from "react-router-dom";
-import PrivateRoute from "./PrivateRoute";
 
 const mapStateToProps = (state) => {
-	return {
-		appLoaded: state.common.appLoaded,
-		appName: state.common.appName,
-		currentUser: state.common.currentUser,
-		redirectTo: state.common.redirectTo,
-	};
+  return {
+    appLoaded: state.common.appLoaded,
+    appName: state.common.appName,
+    currentUser: state.common.currentUser,
+    redirectTo: state.common.redirectTo,
+  };
 };
 
 const mapDispatchToProps = (dispatch) => ({
-	onLoad: (payload, token) =>
-		dispatch({ type: APP_LOAD, payload, token, skipTracking: true }),
-	onRedirect: () => dispatch({ type: REDIRECT }),
+  onLoad: (payload, token) =>
+    dispatch({ type: APP_LOAD, payload, token, skipTracking: true }),
+  onRedirect: () => dispatch({ type: REDIRECT }),
 });
 
 const App = (props) => {
-	const { redirectTo, onRedirect, onLoad } = props;
-	const navigate = useNavigate();
+  const { redirectTo, onRedirect, onLoad } = props;
+  const navigate = useNavigate();
 
-	useEffect(() => {
-		if (redirectTo) {
-			navigate(redirectTo);
-			onRedirect();
-		}
-	}, [redirectTo, onRedirect, navigate]);
+  useEffect(() => {
+    if (redirectTo) {
+      navigate(redirectTo);
+      onRedirect();
+    }
+  }, [redirectTo, onRedirect, navigate]);
 
-	useEffect(() => {
-		const token = window.localStorage.getItem("jwt");
-		if (token) {
-			agent.setToken(token);
-			const decoded = jwt_decode(token);
-			if (decoded.exp * 1000 < Date.now()) {
-				navigate("/login");
-			}
-		}
+  useEffect(() => {
+    const token = window.localStorage.getItem("jwt");
+    if (token) {
+      agent.setToken(token);
+    }
+    onLoad(token ? agent.Auth.current() : null, token);
+  }, [onLoad]);
 
-		onLoad(token ? agent.Auth.current() : null, token);
-	}, [navigate, onLoad]);
-
-	if (props.appLoaded) {
-		return (
-			<div>
-				<Header appName={props.appName} currentUser={props.currentUser} />
-				<Routes>
-					<Route exact path="/" element={<Home />} />
-					<Route path="/login" element={<Login />} />
-					<Route path="/register" element={<Register />} />
-					<Route path="/editor/:slug" element={<Editor />} />
-					<Route path="/editor" element={<Editor />} />
-					<Route path="/item/:id" element={<Item />} />
-					<Route
-						path="/settings"
-						element={
-							<PrivateRoute user={props.currentUser}>
-								<Settings />
-							</PrivateRoute>
-						}
-					/>
-					<Route path="/:username/favorites" element={<ProfileFavorites />} />
-					<Route path="/:username" element={<Profile />} />
-				</Routes>
-			</div>
-		);
-	}
-	return (
-		<div>
-			<Header appName={props.appName} currentUser={props.currentUser} />
-		</div>
-	);
-};
+  if (props.appLoaded) {
+    return (
+      <div>
+        <Header
+          appName={props.appName}
+          currentUser={props.currentUser}
+        />
+        <Routes>
+          <Route exact path="/" element={<Home/>} />
+          <Route path="/login" element={<Login/>} />
+          <Route path="/register" element={<Register/>} />
+          <Route path="/editor/:slug" element={<Editor/>} />
+          <Route path="/editor" element={<Editor/>} />
+          <Route path="/item/:id" element={<Item/>} />
+          <Route path="/settings" element={<Settings/>} />
+          <Route path="/:username/favorites" element={<ProfileFavorites/>} />
+          <Route path="/:username" element={<Profile/>} />
+        </Routes>
+      </div>
+    );
+  }
+  return (
+    <div>
+      <Header
+        appName={props.appName}
+        currentUser={props.currentUser}
+      />
+    </div>
+  );
+}
 
 export default connect(mapStateToProps, mapDispatchToProps)(App);

@@ -123,12 +123,12 @@ class AnythinkClient {
     return result.data?.item;
   }
 
-  async commentOnItem(slug, commentBody, callingUser) {
+  async commentOnItem(slug, commenBody, callingUser) {
     const result = await this.#apiCall({
       method: Method.POST,
       url: `/api/items/${slug}/comments`,
       callingUser,
-      data: { comment: { body: commentBody } },
+      data: { comment: { body: commenBody } },
     });
     return result.data?.comment;
   }
