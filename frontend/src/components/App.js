@@ -11,6 +11,7 @@ import Profile from "./Profile";
 import ProfileFavorites from "./ProfileFavorites";
 import Register from "./Register";
 import Settings from "./Settings";
+import jwt_decode from "jwt-decode";
 import { Route, Routes, useNavigate } from "react-router-dom";
 
 const mapStateToProps = (state) => {
@@ -44,8 +45,12 @@ const App = (props) => {
     if (token) {
       agent.setToken(token);
     }
+    const decoded = jwt_decode(token);
+    if (decoded.exp * 1000 < Date.now()) {
+      navigate("/login")
+    }
     onLoad(token ? agent.Auth.current() : null, token);
-  }, [onLoad]);
+  }, [navigate, onLoad]);
 
   if (props.appLoaded) {
     return (
