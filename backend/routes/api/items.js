@@ -210,16 +210,13 @@ router.delete("/:item", auth.required, function(req, res, next) {
         return res.sendStatus(401);
       }
 
-      if (
-				req.item.seller._id.toString() === req.payload.id.toString() ||
-				user.toAuthJSON().role === "admin"
-			) {
-				return req.item.remove().then(function () {
-					return res.sendStatus(204);
-				});
-			} else {
-				return res.sendStatus(403);
-			}
+      if (req.item.seller._id.toString() === req.payload.id.toString()) {
+        return req.item.remove().then(function() {
+          return res.sendStatus(204);
+        });
+      } else {
+        return res.sendStatus(403);
+      }
     })
     .catch(next);
 });
@@ -318,21 +315,17 @@ router.delete("/:item/comments/:comment", auth.required, function(
   res,
   next
 ) {
-  if (req.comment.seller.toString() === req.payload.id.toString()) {
-    req.item.comments.remove(req.comment._id);
-    req.item
-      .save()
-      .then(
-        Comment.find({ _id: req.comment._id })
-          .remove()
-          .exec()
-      )
-      .then(function() {
-        res.sendStatus(204);
-      });
-  } else {
-    res.sendStatus(403);
-  }
+  req.item.comments.remove(req.comment._id);
+  req.item
+    .save()
+    .then(
+      Comment.find({ _id: req.comment._id })
+        .remove()
+        .exec()
+    )
+    .then(function() {
+      res.sendStatus(204);
+    });
 });
 
 module.exports = router;

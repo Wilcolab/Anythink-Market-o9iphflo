@@ -59,14 +59,13 @@ UserSchema.methods.generateJWT = function() {
   exp.setDate(today.getDate() + 60);
 
   return jwt.sign(
-		{
-			id: this._id,
-			username: this.username,
-			exp: parseInt(exp.getTime() / 1000),
-			role: this.role,
-		},
-		secret
-	);
+    {
+      id: this._id,
+      username: this.username,
+      exp: parseInt(exp.getTime() / 1000)
+    },
+    secret
+  );
 };
 
 UserSchema.methods.toAuthJSON = function() {
