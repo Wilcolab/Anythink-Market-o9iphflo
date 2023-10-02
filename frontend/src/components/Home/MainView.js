@@ -32,17 +32,16 @@ const GlobalFeedTab = (props) => {
     props.onTabClick("all", agent.Items.all, agent.Items.all());
   };
   return (
-		<li className="nav-item">
-			<button
-				type="button"
-				className={
-					props.tab === "all" ? "nav-link active text-white" : "nav-link"
-				}
-				onClick={clickHandler}>
-				Global Feed
-			</button>
-		</li>
-	);
+    <li className="nav-item">
+      <button
+        type="button"
+        className={props.tab === "all" ? "nav-link active" : "nav-link"}
+        onClick={clickHandler}
+      >
+        Global Feed
+      </button>
+    </li>
+  );
 };
 
 const TagFilterTab = (props) => {
